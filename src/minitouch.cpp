@@ -15,6 +15,7 @@ Minitouch::Minitouch(ros::NodeHandle &node_handle, const std::string &adb_path, 
 }
 
 Minitouch::~Minitouch() {
+    //TODO: make thread-safe
     if (m_adb_minitouch)
         m_adb_minitouch->kill();
 
@@ -25,9 +26,8 @@ Minitouch::~Minitouch() {
 void Minitouch::callback(const std_msgs::String::ConstPtr &msg) {
     boost::system::error_code ec;
 
-    std::string command = msg->data;
-    ROS_DEBUG_STREAM(command);
-    boost::asio::write(m_minitouch_socket, boost::asio::buffer(command),
+    ROS_DEBUG_STREAM(msg->data);
+    boost::asio::write(m_minitouch_socket, boost::asio::buffer(msg->data),
                        boost::asio::transfer_all(), ec);
     if (ec)
         ROS_ERROR_STREAM(ec.message());

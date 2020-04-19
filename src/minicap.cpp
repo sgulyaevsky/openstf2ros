@@ -26,6 +26,7 @@ Minicap::Minicap(
 }
 
 Minicap::~Minicap() {
+    //TODO: make thread-safe
     if (m_adb_minicap)
         m_adb_minicap->kill();
 
@@ -101,14 +102,17 @@ void Minicap::read() {
         ROS_INFO_STREAM(
                 "Virtual display height in pixels (minicap): " << *reinterpret_cast<uint32_t *>(&buffer.data()[18]));
 
+        // read images
         cv::Mat img;
         for (;;) {
+            // read frame size
             boost::asio::read(minicap_socket, boost::asio::buffer(buffer), boost::asio::transfer_exactly(4), ec);
             if (ec) {
                 ROS_ERROR_STREAM(ec.message());
                 return;
             }
 
+            // read frame
             uint32_t frame_size = *reinterpret_cast<uint32_t *>(&buffer[0]);
             buffer.resize(frame_size);
             boost::asio::read(minicap_socket, boost::asio::buffer(buffer), boost::asio::transfer_exactly(frame_size),
@@ -118,8 +122,8 @@ void Minicap::read() {
                 return;
             }
 
+            // decode and publish
             cv::imdecode(cv::Mat(buffer), cv::IMREAD_COLOR, &img);
-
             sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", img).toImageMsg();
             m_image_pub.publish(msg);
         }
