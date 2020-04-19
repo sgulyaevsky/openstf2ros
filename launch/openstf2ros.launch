@@ -1,0 +1,12 @@
+<launch>
+  <node pkg="openstf2ros" type="openstf2ros_node" name="openstf2ros_node" output="screen">
+       <param name="adb_path" value="/usr/bin/adb" />
+       <param name="run_minicap" value="true" />
+       <param name="minicap_libs_dir" value="/home/user/workspace/minicap/libs" />
+       <param name="minicap_shared_libs_dir" value="/home/user/workspace/minicap/jni/minicap-shared/aosp/libs" />
+       <param name="minicap_downscale_factor" value="2" />
+       <param name="run_minitouch" value="true" />
+       <param name="minitouch_libs_dir" value="/home/user/workspace/minitouch/libs" />
+       <param name="tmp_dir_name" value="openstf2ros/" />
+  </node>
+</launch>
