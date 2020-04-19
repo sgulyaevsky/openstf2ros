@@ -11,7 +11,7 @@ To run this package you will need:
 - minicap ([building minicap](https://github.com/openstf/minicap#building))
 - minitouch ([building minitouch](https://github.com/openstf/minitouch#building))
 
-See the launch file examples for the parameters list.
+See the launch file example for the parameters list.
 
 It publishes ```/openstf_screen``` topic and subscribes to ```/openstf_control_messages``` topic for [minitouch control strings](https://github.com/openstf/minitouch#writable-to-the-socket). 
 
